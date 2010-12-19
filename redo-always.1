@@ -1,0 +1,46 @@
+.TH redo-always 1 "2010-12-12" "Redo 0\.00"
+.SH NAME
+.PP
+redo-always - mark the current target as always needing to be
+rebuilt
+.SH SYNOPSIS
+.PP
+redo-always
+.SH DESCRIPTION
+.PP
+Normally redo-always is run from a \.do file that has been executed
+by \f[B]redo\f[](1)\. See \f[B]redo\f[](1) for more details\.
+.PP
+redo-always takes no parameters\. It simply adds an
+\[aq]impossible\[aq] dependency to the current target, which
+ensures that the target will always be rebuilt if anyone runs
+\f[B]redo-ifchange\ targetname\f[]\.
+.PP
+Because of the way redo works, \f[B]redo-ifchange\ targetname\f[]
+will only rebuild \f[B]targetname\f[] once per session\. So if
+multiple targets depend on \f[I]targetname\f[] and
+\f[I]targetname\f[] has called redo-always, only the first target
+will cause it to be rebuilt\. If the build cycle completes and a
+new one begins, it will be rebuilt exactly one more time\.
+.PP
+Normally, any target that depends (directly or indirectly) on a
+sub-target that has called redo-always will also always need to
+rebuild, since one of its dependencies will always be out of date\.
+To avoid this problem, redo-always is usually used along with
+\f[B]redo-stamp\f[](1)\.
+.SH REDO
+.PP
+Part of the \f[B]redo\f[](1) suite\.
+.SH CREDITS
+.PP
+The original concept for \f[B]redo\f[] was created by D\. J\.
+Bernstein and documented on his web site
+(http://cr\.yp\.to/redo\.html)\. This independent implementation
+was created by Avery Pennarun and you can find its source code at
+http://github\.com/apenwarr/redo\.
+.SH SEE ALSO
+.PP
+\f[B]redo\f[](1), \f[B]redo-ifcreate\f[](1),
+\f[B]redo-ifchange\f[](1), \f[B]redo-stamp\f[](1)
+.SH AUTHOR
+Avery Pennarun <apenwarr@gmail.com>
