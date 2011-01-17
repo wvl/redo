@@ -125,13 +125,29 @@ default\.d\.do
 default\.do
 .PP
 In all cases, the \.do file must be in the same directory as the
-target file\.
+target file, or in one of the target\[aq]s parent directories\. For
+example, if given a target named \f[B]\.\./a/b/xtarget\.y\f[], redo
+will look for a \.do file in the following order:
+.IP \[bu] 2
+$PWD/\.\./a/b/xtarget\.y
+.IP \[bu] 2
+$PWD/\.\./a/b/default\.y\.do
+.IP \[bu] 2
+$PWD/\.\./a/b/default\.do
+.IP \[bu] 2
+$PWD/\.\./a/default\.y\.do
+.IP \[bu] 2
+$PWD/\.\./a/default\.do
+.IP \[bu] 2
+$PWD/\.\./default\.y\.do
+.IP \[bu] 2
+$PWD/\.\./default\.do
 .PP
 The first matching \.do file is executed as a \f[B]/bin/sh\f[]
 script\. The \.do script is always executed with the current
-working directory set to the directory containing the \.do file
-(and thus the target)\. Because of that rule, the following two
-commands always have exactly identical behaviour:
+working directory set to the directory containing the \.do file\.
+Because of that rule, the following two commands always have
+exactly identical behaviour:
 .PP
 \f[CR]
       redo\ path/to/target
@@ -159,6 +175,11 @@ output to\.
 .PP
 Instead of using $3, the \.do script may also write the produced
 data to stdout\.
+.PP
+If the \.do file is in the same directory as the target, $1 and $3
+are guaranteed to be simple filenames (with no path component)\. If
+the \.do file is in a parent directory of the target, $1 and $3
+will be relative paths (ie\. will contain slashes)\.
 .PP
 redo is designed to update its targets atomically, and only if the
 do script succeeds (ie\. returns a zero exit code)\. Thus, you
