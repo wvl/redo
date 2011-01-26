@@ -2,6 +2,7 @@
 import sys, os
 import options
 from helpers import atoi
+from version import TAG
 
 optspec = """
 redo [targets...]
@@ -14,12 +15,16 @@ k,keep-going  keep going as long as possible even if some targets fail
 shuffle    randomize the build order to find dependency bugs
 debug-locks  print messages about file locking (useful for debugging)
 debug-pids   print process ids as part of log messages (useful for debugging)
+version   print the current version and exit
 """
 o = options.Options('redo', optspec)
 (opt, flags, extra) = o.parse(sys.argv[1:])
 
 targets = extra or ['all']
 
+if opt.version:
+  print TAG
+  sys.exit(0)
 if opt.debug:
     os.environ['REDO_DEBUG'] = str(opt.debug or 0)
 if opt.verbose:
